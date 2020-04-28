@@ -2,8 +2,8 @@ import sys
 #import numpy as np
 
 char = ['a','b','c','d','e','f','g','h','i','s']
-keys_doors = {'b':'a', 'c':'d', 'g':'f', 'i':'h'}
-doors_list = ['b','c','g','i']
+keys_doors = {'b':'a', 'd':'c', 'g':'f', 'i':'h'}
+doors_list = ['b','d','g','i']
 keys_list = []
 
 # Put file path while running
@@ -106,9 +106,9 @@ def search(x, y):
     
 
     # Add to tuple
-    #print('Visiting %d,%d' % (x, y))
+    print('Visiting %d,%d' % (x, y))
     final_tuple.append((x, y))
-    print(x, y)
+    #print(x, y)
 
     # Mark as visited
     grid[x][y] = 9
