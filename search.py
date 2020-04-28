@@ -1,5 +1,6 @@
-filepath = "Maze3.txt"
+filepath = "Maze1.txt"
 grid = []
+final_tuple = []
 
 
 # Step 1
@@ -37,16 +38,21 @@ def search(x, y):
 
 
     if grid[x][y] == 'e':
-        print('found at %d,%d' % (y, x))
+        print('found at %d,%d' % (x, y))
+        final_tuple.append((x, y))
+        print(final_tuple)
         return True
     elif grid[x][y] == 1:
-        print('wall at %d,%d' % (y, x))
+        #print('wall at %d,%d' % (x, y))
         return False
     elif grid[x][y] == 3:
-        #print('visited at %d,%d' % (y, x))
+        #print('visited at %d,%d' % (x, y))
         return False
     
-    print('visiting %d,%d' % (y, x))
+    # Add to tuple
+    #print('visiting %d,%d' % (x, y))
+    final_tuple.append((x, y))
+    print(x, y)
 
     # mark as visited
     grid[x][y] = 3
