@@ -1,5 +1,9 @@
 filepath = "Maze1.txt"
+
+# Grid containaing the matrix from the text file
 grid = []
+
+# To BE delivered
 final_tuple = []
 
 
@@ -16,8 +20,9 @@ def read_file(filepath):
             grid.append(line)            
     #print(grid)
 
-    # Run function. Starting from 1,1
+    # Run function. Starting from coordiantes of "s"
     deep_index(grid, "s")
+
 
 
 # Step 2
@@ -30,34 +35,40 @@ def deep_index(lst, w):
             search(i, sub.index(w))
 
 
+
 # Step 3
 # Read generated grid and search for path
 def search(x, y):
-    if grid[x][y] == "1" or grid[x][y] == "3" or grid[x][y] == "0":
-        grid[x][y] = int(grid[x][y], base=10)
+    # Convert numbers from strings to integers
+    if grid[x][y] != "e" and grid[x][y] != "s":
+        grid[x][y] = int(grid[x][y])
 
-
+    # e means the end point
     if grid[x][y] == 'e':
         print('found at %d,%d' % (x, y))
         final_tuple.append((x, y))
         print(final_tuple)
         return True
+    
+    # 1 means a wall
     elif grid[x][y] == 1:
-        #print('wall at %d,%d' % (x, y))
+        #print('Wall at %d,%d' % (x, y))
         return False
-    elif grid[x][y] == 3:
-        #print('visited at %d,%d' % (x, y))
+    
+    # 2 means already visited
+    elif grid[x][y] == 2:
+        #print('Visited at %d,%d' % (x, y))
         return False
     
     # Add to tuple
-    #print('visiting %d,%d' % (x, y))
+    #print('Visiting %d,%d' % (x, y))
     final_tuple.append((x, y))
     print(x, y)
 
-    # mark as visited
-    grid[x][y] = 3
+    # Mark as visited
+    grid[x][y] = 2
 
-    # explore neighbors clockwise starting by the one on the right
+    # Explore paths clockwise starting from the one on the right
     if ((x < len(grid)-1 and search(x+1, y))
         or (y > 0 and search(x, y-1))
         or (x > 0 and search(x-1, y))
@@ -72,6 +83,7 @@ def search(x, y):
 # Step 1: Read file and generate grid
 read_file(filepath)
 #deep_index(test_grid, "s")
+
 
 # Step 2: Search for 's'
 # callback of step 2
