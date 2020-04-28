@@ -1,9 +1,19 @@
-filepath = "Maze1.txt"
+import sys
+
+# Put file path while running
+filepath = ""
+if len (sys.argv) != 2:
+    print('Please put the file name as argument. Ex: python search.py Maze1.txt')
+    sys.exit (1)
+else:
+    filepath = sys.argv[1]
+
+
 
 # Grid containaing the matrix from the text file
 grid = []
 
-# To BE delivered
+# To Be delivered
 final_tuple = []
 
 
