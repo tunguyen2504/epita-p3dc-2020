@@ -90,7 +90,13 @@ def search(x, y):
     # Found a key
     elif grid[x][y] == 'a':
         keys_list.append(grid[x][y])
-        print('Found Key: ' + grid[x][y])        
+        print('Found Key: ' + grid[x][y]) 
+
+        # Remove the visited path
+        for l in grid:
+            for n, i in enumerate(l):                
+                if i == int('9'):
+                    l[n] = '0'
 
 
     # 9 means already visited
