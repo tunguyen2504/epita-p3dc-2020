@@ -19,7 +19,8 @@ else:
 # Grid containaing the matrix from the text file
 grid = []
 
-# To Be delivered
+
+# Path to be delivered
 final_tuple = []
 
 
@@ -34,23 +35,25 @@ def read_file(filepath):
 
             # Add new list to the main grid
             grid.append(line) 
-    #print(grid) 
+    # print(grid) 
             
 
     # Run function. Starting from coordiantes of "s"
-    deep_index(grid, "s")
+    deep_index(grid, "s")               
 
 
 
 # Step 2
 # Search for index of element in sub-list.
 # It will return (x,y)
+# Replace the 's' with '0'
 def deep_index(lst, w):
     for (i, sub) in enumerate(lst):
-        if w in sub:
-            print("Starting from: " + str(i) + "," + str(sub.index(w)))
-            search(i, sub.index(w))
-
+        if w in sub:            
+            loc = sub.index(w)
+            sub.remove(w)
+            sub.insert(loc, '0')
+            search(i, loc)
 
 
 # Step 3
@@ -62,18 +65,14 @@ def search(x, y):
 
     # e means the end point
     if grid[x][y] == 'e':
-        print('found at %d,%d' % (x, y))
+        print('Found at %d,%d' % (x, y))
         final_tuple.append((x, y))
         print(final_tuple)
-
-        # Final Grid
-        print('')
-        print(grid)
         return True
     
     # 1 means a wall
     elif grid[x][y] == '1':
-        #print('Wall at %d,%d' % (x, y))
+        # print('Wall at %d,%d' % (x, y))
         return False
         
     # Found a door
@@ -89,17 +88,18 @@ def search(x, y):
         else:
             keys_list.remove(need_key)
             print('You can pass')            
-            
+
 
     # Found a key
     elif grid[x][y] in doors_keys.values():
         keys_list.append(grid[x][y])
-        print('Found Key: ' + grid[x][y]) 
+        print('Found Key: ' + grid[x][y])
         # Remove the visited path
         for l in grid:
             for n, i in enumerate(l):                
                 if i == '9':
                     l[n] = '0'
+
 
     # 9 means already visited
     elif grid[x][y] == '9' :
@@ -110,7 +110,7 @@ def search(x, y):
     # Add to tuple
     print('Visiting %d,%d' % (x, y))    
     final_tuple.append((x, y))
-    #print(x, y)
+    # print(x, y)
 
     # Mark as visited
     grid[x][y] = '9'
@@ -121,7 +121,8 @@ def search(x, y):
         or (x > 0 and search(x-1, y))
         or (y < len(grid)-1 and search(x, y+1))):
         return True
-
+    print('Visiting previous cell %d,%d' % (x, y))   
+    final_tuple.append((x, y))
     return False
 
 
