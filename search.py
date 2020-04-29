@@ -115,7 +115,7 @@ def search(x, y):
     # Mark as visited
     grid[x][y] = '9'
 
-    # Explore paths clockwise starting from the one on the right
+    # Explore paths clockwise starting from the one on the bottom
     if ((x < len(grid)-1 and search(x+1, y))
         or (y > 0 and search(x, y-1))
         or (x > 0 and search(x-1, y))
