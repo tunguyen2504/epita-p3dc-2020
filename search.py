@@ -35,7 +35,7 @@ def read_file(filepath):
 
             # Add new list to the main grid
             grid.append(line) 
-    # print(grid) 
+    print(grid) 
             
 
     # Run function. Starting from coordiantes of "s"
@@ -103,7 +103,7 @@ def search(x, y):
 
     # 9 means already visited
     elif grid[x][y] == '9' :
-        #print('Visited at %d,%d' % (x, y))
+        # print('Visited at %d,%d' % (x, y))
         return False
     
 
