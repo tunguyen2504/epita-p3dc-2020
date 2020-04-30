@@ -22,7 +22,7 @@ class Reader:
             print(line)
 
 
-# In[47]:
+# In[8]:
 
 
 class Runner:
@@ -128,9 +128,42 @@ class Runner:
                         door_found = True
                     if (key_found and door_found):
                         break
+    
+    def has_round_path(self, maze):
+        for i in range(1,len(maze) - 1):
+            for j in range(1,len(maze[0]) - 1):
+                if (maze[i][j] == '1'):
+                    around_list = [maze[i-1][j-1], maze[i-1][j], maze[i-1][j+1], maze[i][j+1], maze[i+1][j+1], maze[i+1][j], maze[i+1][j-1], maze[i][j-1]]
+                    if (around_list.count('1') == 0):
+                        print('x,y: ' + str((i,j)))
+                        return True
+        return False
+                        
+    def fill_round_path(self, maze):
+        
+        while (self.has_round_path(maze)):
+            for i in range(1,len(maze) - 1):
+                for j in range(1,len(maze[0]) - 1):
+                    if (maze[i][j] == '1'):
+                        around_list = {(i-1,j-1):maze[i-1][j-1], (i-1,j):maze[i-1][j], (i-1,j+1):maze[i-1][j+1], (i,j+1):maze[i][j+1], (i+1,j+1):maze[i+1][j+1], (i+1,j):maze[i+1][j], (i+1,j-1):maze[i+1][j-1], (i,j-1):maze[i][j-1]}
+                        if (list(around_list.values()).count('1') == 0):
+                            for k,v in around_list.items():
+                                keep_cell = False
+                                a = k[0]
+                                b = k[1]
+                                around_list_of_v = {(a-1,b-1):maze[a-1][b-1], (a-1,b):maze[a-1][b], (a-1,b+1):maze[a-1][b+1], (a,b+1):maze[a][b+1], (a+1,b+1):maze[a+1][b+1], (a+1,b):maze[a+1][b], (a+1,b-1):maze[a+1][b-1], (a,b-1):maze[a][b-1]}
+                                neighbors = [maze[a-1][b], maze[a][b+1], maze[a+1][b], maze[a][b-1]]
+                                for key,val in around_list_of_v.items():
+                                    if (val != '1' and key not in list(around_list.keys())):
+                                        keep_cell = True
+                                        break;
+                                if (not keep_cell):
+                                    maze[a][b] = '1'
+                            
         
     def run(self):
         key_need = {}
+        # Find and fill dead-end 1st time
         while (self.has_dead_end(self.grid)):
             for i in range(0,len(self.grid)):
                 for j in range(0,len(self.grid[i])):
@@ -141,6 +174,20 @@ class Runner:
                     if (self.is_dead_end(i,j,self.grid)):
                         self.fill_dead_end(i,j)
         self.new_grid = self.grid
+        
+        # Find and fill round path
+        self.fill_round_path(self.new_grid)
+        
+        # Find and fill dead-end 2nd time
+        while (self.has_dead_end(self.new_grid)):
+            for i in range(0,len(self.new_grid)):
+                for j in range(0,len(self.new_grid[i])):
+                    if (self.grid[i][j] == 's'):
+                        if not self.start:
+                            self.start['x'] = i
+                            self.start['y'] = j
+                    if (self.is_dead_end(i,j,self.new_grid)):
+                        self.fill_dead_end(i,j)
         print(self.key_dict)
         for k,d in self.key_dict.items():
             if any(d in line for line in self.new_grid):
@@ -152,14 +199,14 @@ class Runner:
         print(self.door_location)
         
         self.next_step(self.start['x'], self.start['y'])
-        print("\nMaze after fill dead-end")
+        print("\nMaze after fill dead-end & fill round path")
         print(self.start)
         for line in self.new_grid:
             print(line)
         print(self.path)
 
 
-# In[74]:
+# In[16]:
 
 
 reader = Reader()
@@ -167,9 +214,12 @@ reader.read_file("Maze3.txt")
 runner = Runner(reader.grid)
 # runner.locate_start_end()
 runner.run()
+# runner.fill_round_path(runner.new_grid)
+# for line in runner.new_grid:
+#     print(line)
 
 
-# In[75]:
+# In[18]:
 
 
 char = ['a','b','c','d','e','f','g','h','i','s']
@@ -251,7 +301,7 @@ def search(x, y, turn_back):
     # Found a key
     elif grid[x][y] in doors_keys.values():
         keys_list.append(grid[x][y])
-        print('Visiting %d,%d' % (x, y))
+        print('Line 80: Visiting %d,%d' % (x, y))
         print('Found Key: ' + grid[x][y])
         final_tuple.append((x,y))
         # Remove the visited path
@@ -304,7 +354,7 @@ def search(x, y, turn_back):
 #                             if (list(v_neighbors.values()).count('1') < 2): # this means v is a junction
                             search(k[0], k[1], 1)
                             return False
-            else:
+            else: # grid[x][y] is a junction
                 for k,v in neighbors.items():
                     if (v == '8' and (k[0],k[1]) != final_tuple[-2]):
                         search(k[0], k[1], 1)
@@ -314,7 +364,7 @@ def search(x, y, turn_back):
             return False
                 
             
-
+    neighbors = {(x-1,y):grid[x-1][y], (x,y+1):grid[x][y+1], (x+1,y):grid[x+1][y], (x,y-1):grid[x][y-1]}
     # Add to tuple
     if (len(final_tuple) > 0):
 #         print((x,y) != final_tuple[-1])
@@ -325,12 +375,27 @@ def search(x, y, turn_back):
             final_tuple.append((x, y))
         #print(x, y)
     else:
-        print('Visiting %d,%d' % (x, y))    
+        print('Line 154: Visiting %d,%d' % (x, y))    
         final_tuple.append((x, y))
     # Mark as visited
     if (turn_back == 0):
         grid[x][y] = '9' # to mark the first visit
-
+#     # If cell is a junction, choose to go straight
+#     if (list(neighbors.values()).count('0') > 1 and len(final_tuple) > 1):
+#         if (final_tuple[-2][0] == x):
+#             des_y = y*2 - final_tuple[-2][1]
+#             search(x, des_y, 0)
+#         elif (final_tuple[-2][1] == y):
+#             des_x = x*2 - final_tuple[-2][0]
+#             search(des_x, y, 0)
+#         return False     
+    
+    # Search if neighbor cell is a door
+    for k,v in neighbors.items():
+        if (v in doors_list and doors_keys[v] in keys_list):
+            search(k[0], k[1], 0)
+            return False
+        
     # Explore paths clockwise starting from the one on the right
 #     from IPython.core.debugger import set_trace; set_trace() 
     if ((x < len(grid)-1 and search(x+1, y, 0))
