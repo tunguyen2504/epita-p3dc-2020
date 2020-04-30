@@ -139,8 +139,13 @@ final_path = [(1, 1), (2, 1), (3, 1), (4, 1), (4, 2), (5, 2), (6, 2), (6, 1), (7
 
 # Starting point in the final path
 fp_index = 0
+current_x = final_path[fp_index][0]
+current_y = final_path[fp_index][1]
 
-
+# Key list
+keys_list = ["a","c","f","h"]
+owned_keys = []
+doors_keys = {"b":"a", "d":"c", "g":"f", "i":"h"}
  
 # -------- Main Program Loop -----------
 while not done:
@@ -148,8 +153,6 @@ while not done:
         if event.type == pygame.QUIT: # If user clicked close
             done = True               # Done: Exit loop
  
-    # Set the screen background
-    screen.fill(GREY)
  
     # Draw the grid
     for row in range(len(grid)):
@@ -168,9 +171,9 @@ while not done:
                 screen.blit(block, (position_x, position_y))
             
 
-            # Pacman: Start point
-            if grid[row][column] == 's': 
-                screen.blit(pacman, (position_x, position_y))
+            # Pacman: Remove from start point
+            if grid[row][column] == grid[final_path[0][0]][final_path[0][1]]: 
+                screen.blit(path, (position_x, position_y))
              
 
             # Reward: End point
@@ -211,8 +214,12 @@ while not done:
     # Animate Pacman
     if fp_index < len(final_path) - 1:
         fp_index+=1
-        pacman_y = final_path[fp_index][0] * cell_width
-        pacman_x = final_path[fp_index][1] * cell_height
+        current_x = final_path[fp_index][0]
+        current_y = final_path[fp_index][1]
+
+        pacman_y = current_x * cell_width
+        pacman_x = current_y * cell_height
+
         grid[row][column] == 's'
         screen.blit(pacman, (pacman_x, pacman_y))
     else:
@@ -221,9 +228,33 @@ while not done:
         # Exit Game
         done = True
 
+    
+        
+
+    # Track collisions
+    # Collision with a key. Add key to the owned keys list
+    if grid[current_x][current_y] in keys_list:
+        key = grid[current_x][current_y]
+        print("Found Key:" + key)
+        owned_keys.append(grid[current_x][current_y])
+        grid[current_x][current_y] = "0"
+
+
+    # Collision with door. 
+    # Check if relevant key is in owned keys list
+    if grid[current_x][current_y] in doors_keys:
+        door = grid[current_x][current_y]
+        key = doors_keys[door]
+        print("Found Door: " + door)
+        print("Need Key:" + key)
+        if key in owned_keys:
+            print("You can pass")
+            grid[current_x][current_y] = "0"
+            owned_keys.remove(key)
+
 
     # Speed: Frames per second
-    clock.tick(6)
+    clock.tick(5)
  
     # Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
