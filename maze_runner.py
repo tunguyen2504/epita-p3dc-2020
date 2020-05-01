@@ -5,7 +5,7 @@
 # #### Group 23
 # #### Students: Anh Tu NGUYEN -  Joseph MERHEB - Sita SHRESTHA
 
-# In[56]:
+# In[59]:
 
 
 # Class to read a maze from a file
@@ -22,50 +22,58 @@ class Reader:
     def ray_trace(self,p1,p2):
         x0,y0 = p1
         x1,y1 = p2
-
+        
+        # difference between x1 and x0
         dx = abs(x1 - x0)
+        # difference between y1 and y0
         dy = abs(y1 - y0)
         x = x0
         y = y0
-
+        
+        # increment of x and y
         x_incre = 0
         y_incre = 0
+        
+        # if x1 > x0, move 1 cell down, else move 1 cell up
         if (x1 > x0):
             x_incre = 1
         else:
             x_incre = -1
+            
+        # if y1 > y0, move 1 cell right, else move 1 cell left
         if (y1 > y0):
             y_incre = 1
         else:
             y_incre = -1
-        error = dx - dy
+        
+        # different between number of vertical cells and horizontal cells
+        diff = dx - dy
+        # number of cells expected to pass
         n = 1 + dx + dy
         dx *= 2
         dy *= 2
-#         print('n: ' + str(n))
-#         print('dx: ' + str(dx))
-#         print('dy: ' + str(dy))
-#         print('error: ' + str(error))
         result = []
 
         for i in range(0,n):
-            if error > 0:
+            # if there are more vertical cells than horizontal cells, move 1 cell vertically
+            if diff > 0:
                 x += x_incre
-                error -= dy
-
-            elif error < 0:
+                diff -= dy
+            
+            # if there are more horizontal cells than vertical cells, move 1 cell horizontally
+            elif diff < 0:
                 y += y_incre
-                error += dx
-
-            elif error == 0:
+                diff += dx
+            
+            # if vertical cells = horizontal cells, it means the line is a perfect diagonal line
+            elif diff == 0:
                 x += x_incre
                 y += y_incre
-                error -= dy
-                error += dx
+                diff -= dy
+                diff += dx
             result.append((x,y))
-#             print((x,y))
-#             print(error)
-            if (x,y) == (x1,y1): break
+            if (x,y) == (x1,y1): 
+                break
         return result
     
     # to check if cell is seen by the ghost
@@ -74,18 +82,22 @@ class Reader:
         x,y = ghost_pos
         # if cell is at top-left of ghost
         if (a < x and b < y):
+            # if there are walls at top-left of ghost
             if (maze[x-1][y] == '1' and maze[x][y-1] == '1'):
                 return True
         # if cell is at top-right of ghost
         elif (a < x and b > y):
+            # if there are walls at top-right of ghost
             if (maze[x-1][y] == '1' and maze[x][y+1] == '1'):
                 return True
         # if cell is at bottom-right of ghost
         elif (a > x and b > y):
+            # if there are walls at bottom-right of ghost
             if (maze[x+1][y] == '1' and maze[x][y+1] == '1'):
                 return True
         # if cell is at bottom-left of ghost
         elif (a > x and b < y):
+            # if there are walls at bottom-left of ghost
             if (maze[x+1][y] == '1' and maze[x][y-1] == '1'):
                 return True
         for (i,j) in self.ray_trace(cell_pos, ghost_pos):
@@ -108,6 +120,7 @@ class Reader:
                     else:
                         maze[x+i][y+j] = 'x'
     
+    # read the input file
     def read_file(self, file_path):
         with open(file_path, 'r') as my_txt:        
             # For each line     
@@ -129,7 +142,7 @@ class Reader:
             print(line)
 
 
-# In[57]:
+# In[60]:
 
 
 # Class to find output for the maze
@@ -172,7 +185,7 @@ class Runner:
     def fill_dead_end(self, x, y, maze):
         maze[x][y] = '1'
        
-    # to find if there is a dead-end cell in the maze
+    # to find if there is a dead-end cell in the maze (surrounded by walls)
     def has_dead_end(self, maze):
         for i in range(0, len(maze)):
             for j in range(0, len(maze[i])):
@@ -184,13 +197,14 @@ class Runner:
     def has_round_path(self, maze):
         for i in range(1,len(maze) - 1):
             for j in range(1,len(maze[0]) - 1):
+                # if cell is a wall, try to check if around it is a path or not
                 if (maze[i][j] == '1'):
                     around_list = [maze[i-1][j-1], maze[i-1][j], maze[i-1][j+1], maze[i][j+1], maze[i+1][j+1], maze[i+1][j], maze[i+1][j-1], maze[i][j-1]]
                     if (around_list.count('1') == 0):
                         return True
         return False
 
-    # to fill the round-path
+    # to fill the round-path to remove unnecessary cells
     def fill_round_path(self, maze):
         while (self.has_round_path(maze)):
             for i in range(1,len(maze) - 1):
@@ -209,13 +223,13 @@ class Runner:
                                     around_list_of_v = {(a-1,b-1):maze[a-1][b-1], (a-1,b):maze[a-1][b], (a-1,b+1):maze[a-1][b+1], (a,b+1):maze[a][b+1], (a+1,b+1):maze[a+1][b+1], (a+1,b):maze[a+1][b], (a+1,b-1):maze[a+1][b-1], (a,b-1):maze[a][b-1]}
                                     neighbors = [maze[a-1][b], maze[a][b+1], maze[a+1][b], maze[a][b-1]]
                                     for key,val in around_list_of_v.items():
-                                        if (val != '1' and key not in list(around_list.keys())):
+                                        if ((val != '1' and val != 'x') and key not in list(around_list.keys())):
                                             keep_cell = True
                                             break;
                                     if (not keep_cell):
                                         maze[a][b] = '1'
                 
-                                    
+    # search for maze[x][y], turn_back to indicate the step is new visit or 2nd visit                                
     def search(self, maze, x, y, turn_back):
 #     from IPython.core.debugger import set_trace; set_trace()
         # e means the end point
@@ -376,6 +390,7 @@ class Runner:
 
         return False                          
         
+    # Pacman start
     def run(self):
         key_need = {}
         # Find and fill dead-end 1st time
@@ -416,7 +431,7 @@ class Runner:
         self.search(self.new_grid, self.start['x'], self.start['y'], 0)
 
 
-# In[58]:
+# In[61]:
 
 
 # import argparse
