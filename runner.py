@@ -17,9 +17,10 @@ VISITED_ONCE = '*'
 VISITED_TWICE = '@'
 
 
-# In[6]:
+# In[2]:
 
 
+from reader import *
 # Class to find output for the maze
 class Runner:
     def __init__(self, grid):
@@ -364,29 +365,4 @@ class Runner:
         self.search(self.new_grid, self.start[GHOST_RANGE], self.start['y'], 0)
         
         return self.final_tuple
-
-
-# In[7]:
-
-
-import argparse
-from reader import *
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("input", type=str)
-
-    args = parser.parse_args()
-
-    reader = Reader()
-    maze = reader.read_file(args.input)
-    runner = Runner(maze)
-    runner.run()
-    
-if __name__ == "__main__":
-    main()
-    
-# reader = Reader()
-# reader.read_file("Maze4.txt")
-# runner = Runner(reader.grid)
-# runner.run()
 

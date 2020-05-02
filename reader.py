@@ -5,6 +5,13 @@
 # #### Group 23
 # #### Students: Anh Tu NGUYEN -  Joseph MERHEB - Sita SHRESTHA
 
+# In[ ]:
+
+
+WALL = '1'
+GHOST_RANGE = 'x'
+
+
 # In[1]:
 
 

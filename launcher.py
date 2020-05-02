@@ -1,15 +1,11 @@
- 
+
 # coding: utf-8
 
 # ### Python Week 3-day challenge
 # #### Group 23
 # #### Students: Anh Tu NGUYEN -  Joseph MERHEB - Sita SHRESTHA
 
-
-import pygame
-import sys
-from reader import *
-from maze_runner import *
+# In[1]:
 
 
 # Cell Dimensions
@@ -38,27 +34,28 @@ BLUE_DOOR = 'i'
 GHOST_RANGE = 'x'
 
 
-# Main Class to run the game in UI mode 
-class Main:
-    def init_game(self):
-        # Put file path while running
-        filepath = ""
-        if len (sys.argv) != 2:
-            print('Please put the file name as argument. Ex: python search.py Maze1.txt')
-            sys.exit (1)
-        else:
-            filepath = sys.argv[1]
+# In[2]:
 
+
+import pygame
+import sys
+import copy
+from reader import *
+from runner import *
+
+# Main Class to run the game in UI mode 
+class Launcher:
+    def __init__(self, input_file):
         # Initiate instance of Reader class
         reader = Reader()
-        maze = reader.read_file(filepath)
-
+        maze_to_display = reader.read_file(input_file)
+        maze_to_run = copy.deepcopy(maze_to_display)
         # Initiate instance of Runner class
-        runner = Runner(maze)
+        runner = Runner(maze_to_run)
         final_tuple = runner.run()
 
         # Run UI
-        self.display_ui(maze, final_tuple)
+        self.display_ui(maze_to_display, final_tuple)
 
 
 
@@ -254,6 +251,20 @@ class Main:
         pygame.quit()
 
 
-# Run Game
-main = Main()
-main.init_game()
+# In[3]:
+
+
+def main():
+    # Put file path while running
+    filepath = ""
+    if len (sys.argv) != 2:
+        print('Please put the file name as argument. Ex: python search.py Maze1.txt')
+        sys.exit (1)
+    else:
+        filepath = sys.argv[1]
+    
+    launcher = Launcher(filepath)
+    
+if __name__ == "__main__":
+    main()
+
