@@ -76,7 +76,7 @@ class Launcher:
         screen = pygame.display.set_mode(grid_size)
 
         # Set title of screen
-        pygame.display.set_caption("Epita Maze v0.0.1")
+        pygame.display.set_caption("Epita Pacman Matrix v0.0.1")
         
         # Loop until the user clicks the close button.
         done = False
@@ -146,13 +146,11 @@ class Launcher:
         owned_keys = []
         doors_keys = {YELLOW_DOOR:YELLOW_KEY, GREEN_DOOR:GREEN_KEY, RED_DOOR:RED_KEY, BLUE_DOOR:BLUE_KEY}
         
-
         # The main loop for which the pygame works
         while not done:
             for event in pygame.event.get():  # User did something
                 if event.type == pygame.QUIT: # If user clicked close
                     done = True               # Done: Exit loop
-        
         
             # Draw the maze
             for row in range(len(maze)):
@@ -207,12 +205,21 @@ class Launcher:
             # Animate Pacman
             if ft_index < len(final_tuple) - 1:
                 ft_index+=1
+                # rotate Pacman due to direction
+                if (current_x < final_tuple[ft_index][0]):
+                    NEW_PACMAN_IMG = pygame.transform.rotate(PACMAN_IMG, 270)
+                elif (current_x > final_tuple[ft_index][0]):
+                    NEW_PACMAN_IMG = pygame.transform.rotate(PACMAN_IMG, 90)
+                elif (current_y > final_tuple[ft_index][1]):
+                    NEW_PACMAN_IMG = pygame.transform.flip(PACMAN_IMG, True, False)
+                else:
+                    NEW_PACMAN_IMG = PACMAN_IMG
                 current_x = final_tuple[ft_index][0]
                 current_y = final_tuple[ft_index][1]
                 pacman_y = current_x * CELL_WIDTH
                 pacman_x = current_y * CELL_HEIGHT
                 maze[row][column] == START
-                screen.blit(PACMAN_IMG, (pacman_x, pacman_y))
+                screen.blit(NEW_PACMAN_IMG, (pacman_x, pacman_y))
             else:
                 # Pause Time in milliseconds
                 pygame.time.wait(WAITING_TIME)

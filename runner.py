@@ -143,8 +143,6 @@ class Runner:
                 
     # search for maze[x][y], turn_back to indicate the step is new visit or 2nd visit                                
     def search(self, maze, x, y, turn_back):
-#         if (x,y) == (11,8):
-#             from IPython.core.debugger import set_trace; set_trace()
         
         # 1 means a wall
         if maze[x][y] == WALL:
@@ -174,10 +172,6 @@ class Runner:
             print("\n Path to exit:")
             print(self.final_tuple)
 
-            # Final Maze
-#             print('')
-#             for line in maze:
-#                 print(line)
             return True
 
         # Found a door
@@ -264,8 +258,7 @@ class Runner:
                     # if there is cell that has not been visited, then visit it
                     if (list(neighbors.values()).count(CELL) > 0):
                         for k,v in neighbors.items():
-                            if (v == CELL):
-#                                 from IPython.core.debugger import set_trace; set_trace() 
+                            if (v == CELL): 
                                 self.search(maze, k[0], k[1], 0)
                                 return False
                     else:
@@ -313,7 +306,6 @@ class Runner:
                 return False
 
         # Explore paths clockwise starting from the one on the right
-#         from IPython.core.debugger import set_trace; set_trace() 
         if ((x < len(maze)-1 and self.search(maze, x+1, y, 0))
             or (y > 0 and self.search(maze, x, y-1, 0))
             or (x > 0 and self.search(maze, x-1, y, 0))
@@ -355,11 +347,6 @@ class Runner:
                 # Fill all the unnecessary cells to be wall
                 for (x,y) in self.round_paths[center]:
                     self.fill_dead_end(x, y, self.grid)
-        
-#         print("\nMaze after fill dead-end & fill round path")
-#         print(self.start)
-#         for line in self.new_grid:
-#             print(line)
         
         # Start searching
         self.search(self.new_grid, self.start[GHOST_RANGE], self.start['y'], 0)

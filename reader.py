@@ -27,7 +27,6 @@ class Reader:
         
     # to find the lines of sight between 2 cell
     def ray_trace(self,p1,p2):
-#         from IPython.core.debugger import set_trace; set_trace()
         x0,y0 = p1
         x1,y1 = p2
         
@@ -139,7 +138,6 @@ class Reader:
                     del line[-1]
                 self.grid.append(line)
         
-#         from IPython.core.debugger import set_trace; set_trace()
         for i in range(0,len(self.grid)):
             for j in range(0,len(self.grid[i])):
                 if self.is_ghost(i, j, self.grid):
