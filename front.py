@@ -8,7 +8,7 @@ import pygame
 #from .dir import Reader
 
 
-# Settings
+# Cell Dimensions
 CELL_WIDTH = 36
 CELL_HEIGHT = 36
 
@@ -26,7 +26,6 @@ START = 's'
 END = 'e'
 VISITED_ONCE = '*'
 VISITED_TWICE = '@'
-
 YELLOW_KEY = 'a'
 YELLOW_DOOR = 'b'
 GREEN_DOOR = 'c'
@@ -59,8 +58,13 @@ grid = [
 
 
 # Path
-# Maze 4
 final_path = [(1, 1), (2, 1), (3, 1), (4, 1), (4, 2), (5, 2), (6, 2), (6, 1), (7, 1), (8, 1), (8, 2), (9, 2), (10, 2), (10, 1), (11, 1), (12, 1), (13, 1), (13, 2), (14, 2), (15, 2), (15, 1), (15, 2), (14, 2), (13, 2), (13, 1), (12, 1), (11, 1), (10, 1), (10, 2), (9, 2), (8, 2), (8, 3), (7, 3), (7, 4), (7, 5), (8, 5), (8, 6), (8, 7), (9, 7), (10, 7), (11, 7), (11, 6), (12, 6), (13, 6), (13, 7), (13, 8), (12, 8), (11, 8), (11, 9), (11, 10), (11, 11), (10, 11), (9, 11), (9, 12), (9, 13), (10, 13), (10, 14), (11, 14), (12, 14), (12, 13), (12, 12), (13, 12), (14, 12), (15, 12), (15, 11), (15, 12), (14, 12), (13, 12), (12, 12), (12, 13), (12, 14), (11, 14), (10, 14), (10, 13), (9, 13), (9, 12), (9, 11), (10, 11), (11, 11), (11, 10), (11, 9), (11, 8), (11, 7), (10, 7), (9, 7), (8, 7), (8, 6), (8, 5), (7, 5), (6, 5), (5, 5), (4, 5), (4, 6), (4, 7), (3, 7), (2, 7), (1, 7), (1, 8), (1, 9), (2, 9), (3, 9), (3, 10), (3, 11), (4, 11), (5, 11), (5, 10), (6, 10), (7, 10), (7, 11), (7, 12), (7, 13), (7, 14), (7, 15), (8, 15), (9, 15), (9, 16), (10, 16), (11, 16), (10, 16), (9, 16), (9, 15), (8, 15), (7, 15), (7, 14), (7, 13), (7, 12), (7, 11), (7, 10), (6, 10), (5, 10), (5, 11), (4, 11), (3, 11), (3, 10), (3, 9), (2, 9), (1, 9), (1, 10), (1, 11), (1, 12), (2, 12), (2, 13), (2, 14), (1, 14), (1, 15), (1, 16), (2, 16), (3, 16), (3, 15), (4, 15), (5, 15), (5, 16)]
+
+
+# The starting point in the final path
+fp_index = 0
+current_x = final_path[fp_index][0]
+current_y = final_path[fp_index][1]
 
 
 # Initialize pygame
@@ -81,16 +85,16 @@ done = False
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
 
-# Define characters' images and resize to fit the cell dimensions
+# Define grid elements and resize to fit the cell dimensions
 # block
 BLOCK_IMG = pygame.image.load("resources/sprites/block.png").convert()
 BLOCK_IMG = pygame.transform.scale(BLOCK_IMG, (CELL_WIDTH, CELL_HEIGHT))
 
-# blue_door
+# blue door
 BLUE_DOOR_IMG = pygame.image.load("resources/sprites/blue_door.png").convert()
 BLUE_DOOR_IMG = pygame.transform.scale(BLUE_DOOR_IMG, (CELL_WIDTH, CELL_HEIGHT))
 
-# blue_key
+# blue key
 BLUE_KEY_IMG = pygame.image.load("resources/sprites/blue_key.png").convert()
 BLUE_KEY_IMG = pygame.transform.scale(BLUE_KEY_IMG, (CELL_WIDTH, CELL_HEIGHT))
 
@@ -102,11 +106,11 @@ GHOST_IMG = pygame.transform.scale(GHOST_IMG, (CELL_WIDTH, CELL_HEIGHT))
 GHOST_CELL_IMG = pygame.image.load("resources/sprites/pink_cell.png").convert()
 GHOST_CELL_IMG = pygame.transform.scale(GHOST_CELL_IMG, (CELL_WIDTH, CELL_HEIGHT))
 
-# green_door
+# green door
 GREEN_DOOR_IMG = pygame.image.load("resources/sprites/green_door.png").convert()
 GREEN_DOOR_IMG = pygame.transform.scale(GREEN_DOOR_IMG, (CELL_WIDTH, CELL_HEIGHT))
 
-# green_key
+# green key
 GREEN_KEY_IMG = pygame.image.load("resources/sprites/green_key.png").convert()
 GREEN_KEY_IMG = pygame.transform.scale(GREEN_KEY_IMG, (CELL_WIDTH, CELL_HEIGHT))
 
@@ -118,11 +122,11 @@ PACMAN_IMG = pygame.transform.scale(PACMAN_IMG, (CELL_WIDTH, CELL_HEIGHT))
 PATH_IMG = pygame.image.load("resources/sprites/path.png").convert()
 PATH_IMG = pygame.transform.scale(PATH_IMG, (CELL_WIDTH, CELL_HEIGHT))
 
-# red_door
+# red door
 RED_DOOR_IMG = pygame.image.load("resources/sprites/red_door.png").convert()
 RED_DOOR_IMG = pygame.transform.scale(RED_DOOR_IMG, (CELL_WIDTH, CELL_HEIGHT))
 
-# red_key
+# red key
 RED_KEY_IMG = pygame.image.load("resources/sprites/red_key.png").convert()
 RED_KEY_IMG = pygame.transform.scale(RED_KEY_IMG, (CELL_WIDTH, CELL_HEIGHT))
 
@@ -130,18 +134,14 @@ RED_KEY_IMG = pygame.transform.scale(RED_KEY_IMG, (CELL_WIDTH, CELL_HEIGHT))
 REWARD_IMG = pygame.image.load("resources/sprites/reward.png").convert()
 REWARD_IMG = pygame.transform.scale(REWARD_IMG, (CELL_WIDTH, CELL_HEIGHT))
 
-# yellow_door
+# yellow door
 YELLOW_DOOR_IMG = pygame.image.load("resources/sprites/yellow_door.png").convert()
 YELLOW_DOOR_IMG = pygame.transform.scale(YELLOW_DOOR_IMG, (CELL_WIDTH, CELL_HEIGHT))
 
-# yellow_key
+# yellow key
 YELLOW_KEY_IMG = pygame.image.load("resources/sprites/yellow_key.png").convert()
 YELLOW_KEY_IMG = pygame.transform.scale(YELLOW_KEY_IMG, (CELL_WIDTH, CELL_HEIGHT))
 
-# The starting point in the final path
-fp_index = 0
-current_x = final_path[fp_index][0]
-current_y = final_path[fp_index][1]
 
 
 # Keys and doors
