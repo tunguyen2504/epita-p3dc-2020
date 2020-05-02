@@ -9,8 +9,8 @@ import pygame
 
 
 # Settings
-cell_width = 36
-cell_height = 36
+CELL_WIDTH = 36
+CELL_HEIGHT = 36
 
 # Waiting time at the end
 WAITING_TIME = 3000
@@ -67,8 +67,8 @@ final_path = [(1, 1), (2, 1), (3, 1), (4, 1), (4, 2), (5, 2), (6, 2), (6, 1), (7
 pygame.init()
  
 # Set the height and width of the screen
-grid_width = cell_width  * len(grid[0])
-grid_height = cell_height * len(grid)
+grid_width = CELL_WIDTH  * len(grid[0])
+grid_height = CELL_HEIGHT * len(grid)
 grid_size = [grid_width, grid_height]
 screen = pygame.display.set_mode(grid_size)
 
@@ -83,60 +83,60 @@ clock = pygame.time.Clock()
 
 # Define characters' images and resize to fit the cell dimensions
 # block
-block_img = pygame.image.load("resources/sprites/block.png").convert()
-block_img = pygame.transform.scale(block_img, (cell_width, cell_height))
+BLOCK_IMG = pygame.image.load("resources/sprites/block.png").convert()
+BLOCK_IMG = pygame.transform.scale(BLOCK_IMG, (CELL_WIDTH, CELL_HEIGHT))
 
 # blue_door
-blue_door_img = pygame.image.load("resources/sprites/blue_door.png").convert()
-blue_door_img = pygame.transform.scale(blue_door_img, (cell_width, cell_height))
+BLUE_DOOR_IMG = pygame.image.load("resources/sprites/blue_door.png").convert()
+BLUE_DOOR_IMG = pygame.transform.scale(BLUE_DOOR_IMG, (CELL_WIDTH, CELL_HEIGHT))
 
 # blue_key
-blue_key_img = pygame.image.load("resources/sprites/blue_key.png").convert()
-blue_key_img = pygame.transform.scale(blue_key_img, (cell_width, cell_height))
+BLUE_KEY_IMG = pygame.image.load("resources/sprites/blue_key.png").convert()
+BLUE_KEY_IMG = pygame.transform.scale(BLUE_KEY_IMG, (CELL_WIDTH, CELL_HEIGHT))
 
 # ghost
-ghost_img = pygame.image.load("resources/sprites/ghost.png").convert()
-ghost_img = pygame.transform.scale(ghost_img, (cell_width, cell_height))
+GHOST_IMG = pygame.image.load("resources/sprites/ghost.png").convert()
+GHOST_IMG = pygame.transform.scale(GHOST_IMG, (CELL_WIDTH, CELL_HEIGHT))
 
 # ghost pink cell
-ghost_cell_img = pygame.image.load("resources/sprites/pink_cell.png").convert()
-ghost_cell_img = pygame.transform.scale(ghost_cell_img, (cell_width, cell_height))
+GHOST_CELL_IMG = pygame.image.load("resources/sprites/pink_cell.png").convert()
+GHOST_CELL_IMG = pygame.transform.scale(GHOST_CELL_IMG, (CELL_WIDTH, CELL_HEIGHT))
 
 # green_door
-green_door_img = pygame.image.load("resources/sprites/green_door.png").convert()
-green_door_img = pygame.transform.scale(green_door_img, (cell_width, cell_height))
+GREEN_DOOR_IMG = pygame.image.load("resources/sprites/green_door.png").convert()
+GREEN_DOOR_IMG = pygame.transform.scale(GREEN_DOOR_IMG, (CELL_WIDTH, CELL_HEIGHT))
 
 # green_key
-green_key_img = pygame.image.load("resources/sprites/green_key.png").convert()
-green_key_img = pygame.transform.scale(green_key_img, (cell_width, cell_height))
+GREEN_KEY_IMG = pygame.image.load("resources/sprites/green_key.png").convert()
+GREEN_KEY_IMG = pygame.transform.scale(GREEN_KEY_IMG, (CELL_WIDTH, CELL_HEIGHT))
 
 # pacman: Start Point
-pacman_img = pygame.image.load("resources/sprites/pacman.png").convert()
-pacman_img = pygame.transform.scale(pacman_img, (cell_width, cell_height))
+PACMAN_IMG = pygame.image.load("resources/sprites/pacman.png").convert()
+PACMAN_IMG = pygame.transform.scale(PACMAN_IMG, (CELL_WIDTH, CELL_HEIGHT))
 
 # path
-path_img = pygame.image.load("resources/sprites/path.png").convert()
-path_img = pygame.transform.scale(path_img, (cell_width, cell_height))
+PATH_IMG = pygame.image.load("resources/sprites/path.png").convert()
+PATH_IMG = pygame.transform.scale(PATH_IMG, (CELL_WIDTH, CELL_HEIGHT))
 
 # red_door
-red_door_img = pygame.image.load("resources/sprites/red_door.png").convert()
-red_door_img = pygame.transform.scale(red_door_img, (cell_width, cell_height))
+RED_DOOR_IMG = pygame.image.load("resources/sprites/red_door.png").convert()
+RED_DOOR_IMG = pygame.transform.scale(RED_DOOR_IMG, (CELL_WIDTH, CELL_HEIGHT))
 
 # red_key
-red_key_img = pygame.image.load("resources/sprites/red_key.png").convert()
-red_key_img = pygame.transform.scale(red_key_img, (cell_width, cell_height))
+RED_KEY_IMG = pygame.image.load("resources/sprites/red_key.png").convert()
+RED_KEY_IMG = pygame.transform.scale(RED_KEY_IMG, (CELL_WIDTH, CELL_HEIGHT))
 
 # reward: end point
-reward_img = pygame.image.load("resources/sprites/reward.png").convert()
-reward_img = pygame.transform.scale(reward_img, (cell_width, cell_height))
+REWARD_IMG = pygame.image.load("resources/sprites/reward.png").convert()
+REWARD_IMG = pygame.transform.scale(REWARD_IMG, (CELL_WIDTH, CELL_HEIGHT))
 
 # yellow_door
-yellow_door_img = pygame.image.load("resources/sprites/yellow_door.png").convert()
-yellow_door_img = pygame.transform.scale(yellow_door_img, (cell_width, cell_height))
+YELLOW_DOOR_IMG = pygame.image.load("resources/sprites/yellow_door.png").convert()
+YELLOW_DOOR_IMG = pygame.transform.scale(YELLOW_DOOR_IMG, (CELL_WIDTH, CELL_HEIGHT))
 
 # yellow_key
-yellow_key_img = pygame.image.load("resources/sprites/yellow_key.png").convert()
-yellow_key_img = pygame.transform.scale(yellow_key_img, (cell_width, cell_height))
+YELLOW_KEY_IMG = pygame.image.load("resources/sprites/yellow_key.png").convert()
+YELLOW_KEY_IMG = pygame.transform.scale(YELLOW_KEY_IMG, (CELL_WIDTH, CELL_HEIGHT))
 
 # The starting point in the final path
 fp_index = 0
@@ -161,51 +161,51 @@ while not done:
     # Draw the grid
     for row in range(len(grid)):
         for column in range(len(grid[0])):    
-            position_y = row * cell_height
-            position_x = column * cell_width
+            position_y = row * CELL_HEIGHT
+            position_x = column * CELL_WIDTH
 
             # Draw grid elements
             # path
             if grid[row][column] == CELL:
-                screen.blit(path_img, (position_x, position_y))
+                screen.blit(PATH_IMG, (position_x, position_y))
 
             # block_img
             if grid[row][column] == WALL:
-                screen.blit(block_img, (position_x, position_y))
+                screen.blit(BLOCK_IMG, (position_x, position_y))
             
             # Pacman: Remove from start point
             if grid[row][column] == grid[final_path[0][0]][final_path[0][1]]: 
-                screen.blit(path_img, (position_x, position_y))
+                screen.blit(PATH_IMG, (position_x, position_y))
             
             # Reward: End point
             if grid[row][column] == END:
-                screen.blit(reward_img, (position_x, position_y))
+                screen.blit(REWARD_IMG, (position_x, position_y))
                 
             # Doors
             if grid[row][column] == YELLOW_DOOR:
-                screen.blit(yellow_door_img, (position_x, position_y))
+                screen.blit(YELLOW_DOOR_IMG, (position_x, position_y))
             if grid[row][column] == GREEN_DOOR:
-                screen.blit(green_door_img, (position_x, position_y))
+                screen.blit(GREEN_DOOR_IMG, (position_x, position_y))
             if grid[row][column] == RED_DOOR:
-                screen.blit(red_door_img, (position_x, position_y))
+                screen.blit(RED_DOOR_IMG, (position_x, position_y))
             if grid[row][column] == BLUE_DOOR:
-                screen.blit(blue_door_img, (position_x, position_y))
+                screen.blit(BLUE_DOOR_IMG, (position_x, position_y))
 
             # Keys
             if grid[row][column] == YELLOW_KEY:
-                screen.blit(yellow_key_img, (position_x, position_y))
+                screen.blit(YELLOW_KEY_IMG, (position_x, position_y))
             if grid[row][column] == GREEN_KEY:
-                screen.blit(green_key_img, (position_x, position_y))
+                screen.blit(GREEN_KEY_IMG, (position_x, position_y))
             if grid[row][column] == RED_KEY:
-                screen.blit(red_key_img, (position_x, position_y))
+                screen.blit(RED_KEY_IMG, (position_x, position_y))
             if grid[row][column] == BLUE_KEY:
-                screen.blit(blue_key_img, (position_x, position_y))
+                screen.blit(BLUE_KEY_IMG, (position_x, position_y))
 
             # Ghosts and their paths
             if grid[row][column].isdigit() and int(grid[row][column]) > 1:
-                screen.blit(ghost_img, (position_x, position_y))
+                screen.blit(GHOST_IMG, (position_x, position_y))
             if grid[row][column] == GHOST_RANGE:
-                screen.blit(ghost_cell_img, (position_x, position_y))
+                screen.blit(GHOST_CELL_IMG, (position_x, position_y))
 
                 
     # Animate Pacman
@@ -214,11 +214,11 @@ while not done:
         current_x = final_path[fp_index][0]
         current_y = final_path[fp_index][1]
 
-        pacman_y = current_x * cell_width
-        pacman_x = current_y * cell_height
+        pacman_y = current_x * CELL_WIDTH
+        pacman_x = current_y * CELL_HEIGHT
 
         grid[row][column] == START
-        screen.blit(pacman_img, (pacman_x, pacman_y))
+        screen.blit(PACMAN_IMG, (pacman_x, pacman_y))
     else:
         # Pause Time in milliseconds
         pygame.time.wait(WAITING_TIME)
